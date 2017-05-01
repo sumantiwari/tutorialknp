@@ -1,0 +1,16 @@
+event_event:
+    resource: "@EventBundle/Resources/config/routing/event.yml"
+    prefix:   /
+
+event_homepage:
+    path:     /hello/{name}/{count}
+    defaults: { _controller: EventBundle:Default:index }
+
+
+insert_data:
+    path:     /setdata
+    defaults: { _controller: EventBundle:Default:setdatabase }
+
+extract_data:
+    path:     /getdata/{name}/{count}
+    defaults: { _controller: EventBundle:Default:getdatabase }

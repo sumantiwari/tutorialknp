@@ -1,0 +1,50 @@
+{% extends 'EventBundle::layout.html.twig' %}
+
+{% block body %}
+    <section class="event-show event-edit">
+        <header id="menu">
+            <a class="link" href="{{ path('event_index') }}">&larr; back to the event list</a>
+        </header>
+
+        <article>
+            <header class="map-container">
+                <img src="https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap
+&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318
+&markers=color:red%7Clabel:C%7C40.718217,-73.998284
+&key=AIzaSyA-B377HnaIQT9vtI8JuKYOhFv93V5jkLA" />
+            </header>
+            <section>
+                {# the opening <form> tag #}
+                {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                    <h1>
+                        {{ form_errors(form.name) }}
+                        {{ form_widget(form.name) }}
+                    </h1>
+
+                    <dl>
+                        <dt>where:</dt>
+                        <dd>
+                            {{ form_errors(form.location) }}
+                            {{ form_widget(form.location) }}
+                        </dd>
+
+                        <dt>when:</dt>
+                        <dd>
+                            {{ form_errors(form.time) }}
+                            {{ form_widget(form.time) }}
+                        </dd>
+
+                        <dt>what:</dt>
+                        <dd>
+                            {{ form_errors(form.detail) }}
+                            {{ form_widget(form.detail) }}
+                        </dd>
+                    </dl>
+<input class="button" type="submit" value="Create" />
+                {# the closing </form> tag #}
+                {{ form_end(form) }}
+            </section>
+        </article>
+    </section>
+{% endblock %}
