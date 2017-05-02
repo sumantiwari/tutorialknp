@@ -9,10 +9,15 @@ security:
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
+        secured_area:
+            pattern: ^/
+            form_login:
+                check_path: _security_check
+                login_path: my-login-url
+            logout: 
+                path: _demo_logout
+                target: _demo
+            anonymous: ~
         main:
             anonymous: ~
             # activate different ways to authenticate
@@ -22,3 +27,7 @@ security:
 
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
             #form_login: ~
+            
+    access_control:
+        - {path: ^/new, roles: ROLE_USER}
+        - {path: ^/create, roles: ROLE_USER}
