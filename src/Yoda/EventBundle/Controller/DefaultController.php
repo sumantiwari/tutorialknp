@@ -3,7 +3,7 @@
 namespace Yoda\EventBundle\Controller;
 
 use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+//use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Yoda\EventBundle\Entity\Event;
 

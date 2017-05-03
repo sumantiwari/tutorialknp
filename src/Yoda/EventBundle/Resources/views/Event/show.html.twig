@@ -10,14 +10,16 @@
         <article>
             <header class="map-container">
                 <img src="https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap
-&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318
-&markers=color:red%7Clabel:C%7C40.718217,-73.998284
-&key=AIzaSyA-B377HnaIQT9vtI8JuKYOhFv93V5jkLA" />
+                     &markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318
+                     &markers=color:red%7Clabel:C%7C40.718217,-73.998284
+                     &key=AIzaSyA-B377HnaIQT9vtI8JuKYOhFv93V5jkLA" />
             </header>
             <section>
                 <h1>
                     {{ entity.name }}
-                    <a class="button" href="{{ path('event_edit', {'id': entity.id}) }}">edit</a>
+                    {% if app.user == entity.owner %}
+                        <a class="button" href="{{ path('event_edit', {'id': entity.id}) }}">edit</a>
+                    {% endif %}
                 </h1>
 
                 <dl>

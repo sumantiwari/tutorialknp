@@ -4,7 +4,7 @@ namespace Yoda\UserBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Yoda\EventBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Yoda\UserBundle\Entity\User;
 use Yoda\UserBundle\Form\RegisterFormType;
@@ -34,7 +34,7 @@ class RegisterController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            
+
             $this->authenticateUser($user);
 
             $request->getSession()
@@ -62,7 +62,7 @@ class RegisterController extends Controller {
         $providerKey = 'secured_area'; // your firewall name
         $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
 
-        $this->container->get('security.context')->setToken($token);
+        $this->getSecurityContext()->setToken($token);
     }
 
 }

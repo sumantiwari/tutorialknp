@@ -4,11 +4,11 @@ namespace Yoda\EventBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Yoda\EventBundle\Entity\Event;
+use Yoda\EventBundle\Controller\Controller;
 
 /**
  * Event controller.
@@ -134,21 +134,22 @@ class EventController extends Controller {
         ;
     }
 
-    private function enforceUserSecurity() {
-        $securityContext = $this->container->get('security.context');
-        if (!$securityContext->isGranted('ROLE_USER')) {
-            throw new AccessDeniedException('Need ROLE_USER!');
+    private function enforceUserSecurity($role = 'ROLE_USER') {
+        if (!$this->getSecurityContext()->isGranted($role)) {
+            // in Symfony 2.5
+            // throw $this->createAccessDeniedException('message!');
+            throw new AccessDeniedException('Need ' . $role);
         }
     }
 
-    private function enforceOwnerSecurity(Event $event) {
-        $user = $this->getUser();
-
-        if ($user != $event->getOwner()) {
-            // if you're using 2.5 or higher
-            // throw $this->createAccessDeniedException('You are not the owner!!!');
-            throw new AccessDeniedException('You are not the owner!!!');
-        }
-    }
+//    private function enforceOwnerSecurity(Event $event) {
+//        $user = $this->getUser();
+//
+//        if ($user != $event->getOwner()) {
+//            // if you're using 2.5 or higher
+//            // throw $this->createAccessDeniedException('You are not the owner!!!');
+//            throw new AccessDeniedException('You are not the owner!!!');
+//        }
+//    }
 
 }
