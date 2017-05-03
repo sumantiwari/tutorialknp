@@ -7,8 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Yoda\EventBundle\Entity\Event;
 use Yoda\EventBundle\Controller\Controller;
+use Yoda\EventBundle\Entity\Event;
 
 /**
  * Event controller.
@@ -53,7 +53,7 @@ class EventController extends Controller {
             $em->persist($event);
             $em->flush();
 
-            return $this->redirectToRoute('event_show', array('id' => $event->getId()));
+            return $this->redirectToRoute('event_show', array('slug' => $entity->getSlug()));
         }
 
         return $this->render('EventBundle:Event:new.html.twig', array(
@@ -66,9 +66,14 @@ class EventController extends Controller {
      * Finds and displays a event entity.
      *
      */
-    public function showAction(Event $event) {
-        $deleteForm = $this->createDeleteForm($event);
+    public function showAction($slug) {
+//        $deleteForm = $this->createDeleteForm($event);
+        $em = $this->getDoctrine()->getManager();
 
+        $event = $em->getRepository('EventBundle:Event')
+                ->findOneBy(array('slug' => $slug));
+
+//        $deleteForm = $this->createDeleteForm($entity->getId());
         return $this->render('EventBundle:Event:show.html.twig', array(
                     'entity' => $event,
 //            'delete_form' => $deleteForm->createView(),
@@ -151,5 +156,4 @@ class EventController extends Controller {
 //            throw new AccessDeniedException('You are not the owner!!!');
 //        }
 //    }
-
 }
