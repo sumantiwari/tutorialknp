@@ -4,13 +4,17 @@ namespace Yoda\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Serializable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
  *
  * @ORM\Table(name="yoda_user")
  * @ORM\Entity(repositoryClass="Yoda\UserBundle\Repository\UserRepository")
+ * @UniqueEntity(fields="username", message="That username is taken!")
+ * @UniqueEntity(fields="email", message="That email is taken!")
  */
 class User implements AdvancedUserInterface, Serializable {
 
@@ -26,12 +30,17 @@ class User implements AdvancedUserInterface, Serializable {
     /**
      * @var string
      *
+     *  
      * @ORM\Column(name="username", type="string", length=255)
+     * @Assert\NotBlank(message="Put in a username of course!")
+     * @Assert\Length(min=3, minMessage="Give us at least 3 characters!")
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
@@ -123,8 +132,6 @@ class User implements AdvancedUserInterface, Serializable {
         return $this->password;
     }
 
-   
-
     public function getRoles() {
         $roles = $this->roles;
         $roles[] = 'ROLE_USER';
@@ -175,10 +182,7 @@ class User implements AdvancedUserInterface, Serializable {
                 ) = unserialize($serialized);
     }
 
-    
     private $plainPassword;
-
- 
 
     public function getPlainPassword() {
         return $this->plainPassword;
@@ -189,11 +193,9 @@ class User implements AdvancedUserInterface, Serializable {
 
         return $this;
     }
-    
-     public function eraseCredentials() {
+
+    public function eraseCredentials() {
 //        $this->setPlainPassword(null);
     }
-
-    
 
 }
