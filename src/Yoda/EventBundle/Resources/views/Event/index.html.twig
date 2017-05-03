@@ -1,15 +1,13 @@
 {% extends 'EventBundle::layout.html.twig' %}
 
 {% block body %}
-    {{parent()}}
+
     <section class="events">
         <header id="menu">
             <a class="button" href="{{ path('event_new') }}">Create new event</a>
 
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                 
-                    <a class="link" href="{{ path('logout') }}">  Logout {{ app.user.username }}   </a>
-               
+                <a class="link" href="{{ path('logout') }}">Logout</a>
             {% else %}
                 <a class="link" href="{{ path('login_form') }}">Login</a>
                 <a class="link" href="{{ path('user_register') }}">Register</a>
