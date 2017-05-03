@@ -3,12 +3,19 @@
 namespace Yoda\UserBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Yoda\UserBundle\Entity\User;
 
-class LoadUsers implements FixtureInterface, ContainerAwareInterface {
+class LoadUsers implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface {
 
+    public function getOrder()
+    {
+        return 10;
+    }
+    
     public function load(ObjectManager $manager) {
         $user = new User();
         $user->setUsername('darth');
@@ -30,7 +37,7 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface {
         $manager->flush();
     }
 
-    public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null) {
+    public function setContainer(ContainerInterface $container = null) {
         $this->container = $container;
     }
 

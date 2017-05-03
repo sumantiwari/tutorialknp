@@ -2,13 +2,13 @@
 
 namespace Yoda\EventBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Yoda\EventBundle\Entity\Event;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Event controller.
@@ -35,16 +35,20 @@ class EventController extends Controller {
 
     /**
      * Creates a new event entity.
-     *@Security("has_role('ROLE_USER')")
+     * @Security("has_role('ROLE_USER')")
      */
     public function newAction(Request $request) {
-          
-         
+
+
         $event = new Event();
         $form = $this->createForm('Yoda\EventBundle\Form\EventType', $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $user = $this->getUser();
+            $event->setOwner($user);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($event);
             $em->flush();
@@ -76,9 +80,11 @@ class EventController extends Controller {
      *
      */
     public function editAction(Request $request, Event $event) {
-         $this->enforceUserSecurity();
-         
-         
+        $this->enforceUserSecurity();
+
+        $this->enforceOwnerSecurity($event);
+
+
         $deleteForm = $this->createDeleteForm($event);
         $editForm = $this->createForm('Yoda\EventBundle\Form\EventType', $event);
         $editForm->handleRequest($request);
@@ -132,6 +138,16 @@ class EventController extends Controller {
         $securityContext = $this->container->get('security.context');
         if (!$securityContext->isGranted('ROLE_USER')) {
             throw new AccessDeniedException('Need ROLE_USER!');
+        }
+    }
+
+    private function enforceOwnerSecurity(Event $event) {
+        $user = $this->getUser();
+
+        if ($user != $event->getOwner()) {
+            // if you're using 2.5 or higher
+            // throw $this->createAccessDeniedException('You are not the owner!!!');
+            throw new AccessDeniedException('You are not the owner!!!');
         }
     }
 

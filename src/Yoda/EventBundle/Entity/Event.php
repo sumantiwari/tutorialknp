@@ -2,7 +2,9 @@
 
 namespace Yoda\EventBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Yoda\UserBundle\Entity\User;
 
 /**
  * Event
@@ -10,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="yoda_event")
  * @ORM\Entity(repositoryClass="Yoda\EventBundle\Repository\EventRepository")
  */
-class Event
-{
+class Event {
+
     /**
      * @var int
      *
@@ -29,7 +31,7 @@ class Event
     private $name;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="time", type="datetime")
      */
@@ -49,14 +51,26 @@ class Event
      */
     private $detail;
 
-
     /**
+     * @ORM\ManyToOne(targetEntity="Yoda\UserBundle\Entity\User")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    protected $owner;
+    public function getOwner() {
+        return $this->owner;
+    }
+
+    public function setOwner(User $owner) {
+        $this->owner = $owner;
+        return $this;
+    }
+
+        /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -66,8 +80,7 @@ class Event
      * @param string $name
      * @return Event
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -78,19 +91,17 @@ class Event
      *
      * @return string 
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
     /**
      * Set time
      *
-     * @param \DateTime $time
+     * @param DateTime $time
      * @return Event
      */
-    public function setTime($time)
-    {
+    public function setTime($time) {
         $this->time = $time;
 
         return $this;
@@ -99,10 +110,9 @@ class Event
     /**
      * Get time
      *
-     * @return \DateTime 
+     * @return DateTime 
      */
-    public function getTime()
-    {
+    public function getTime() {
         return $this->time;
     }
 
@@ -112,8 +122,7 @@ class Event
      * @param string $location
      * @return Event
      */
-    public function setLocation($location)
-    {
+    public function setLocation($location) {
         $this->location = $location;
 
         return $this;
@@ -124,8 +133,7 @@ class Event
      *
      * @return string 
      */
-    public function getLocation()
-    {
+    public function getLocation() {
         return $this->location;
     }
 
@@ -135,8 +143,7 @@ class Event
      * @param string $detail
      * @return Event
      */
-    public function setDetail($detail)
-    {
+    public function setDetail($detail) {
         $this->detail = $detail;
 
         return $this;
@@ -147,8 +154,8 @@ class Event
      *
      * @return string 
      */
-    public function getDetail()
-    {
+    public function getDetail() {
         return $this->detail;
     }
+
 }
