@@ -2,6 +2,7 @@
 
 namespace Yoda\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -19,6 +20,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements AdvancedUserInterface, Serializable {
 
     /**
+     * @ORM\OneToMany(targetEntity="Yoda\EventBundle\Entity\Event", mappedBy="owner")
+     */
+    protected $events;
+    
+    public function __construct() {
+        $this->events = new ArrayCollection();
+    }
+    public function getEvents() {
+        return $this->events;
+    }
+
+//    public function setEvents(ArrayCollection  $events) {
+//        $this->events = $events;
+//        return $this;
+//    }
+
+        /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")

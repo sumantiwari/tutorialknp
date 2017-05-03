@@ -16,7 +16,7 @@
             </header>
             <section>
                 <h1>
-                    {{ entity.name }}
+                    {{ entity.owner.username }}
                     {% if app.user == entity.owner %}
                         <a class="button" href="{{ path('event_edit', {'id': entity.id}) }}">edit</a>
                     {% endif %}
